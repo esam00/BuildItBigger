@@ -3,14 +3,15 @@ package com.udacity.gradle.builditbigger;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.android.jokeandroidlibrary.DisplayJokeActivity;
-import com.example.android.jokejavalibrary.JokeTelling;
 
+import networkAPI.EndPoint;
+import networkAPI.onJokeReceived;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,13 +43,27 @@ return true;
 
         return super.onOptionsItemSelected(item);
     }
-    JokeTelling jokeTelling = new JokeTelling();
 
     public void tellJoke(View view) {
-        JokeTelling joke = new JokeTelling();
-        Intent intent = new Intent(MainActivity.this,DisplayJokeActivity.class);
-        intent.putExtra("joke",joke.getRandomJoke());
-        startActivity(intent);    }
+        fetchJoke();
+    }
 
+    private void startJokeActivity(String joke){
+        Intent mIntent = new Intent(MainActivity.this,DisplayJokeActivity.class);
+        mIntent.putExtra("joke",joke);
+        startActivity(mIntent);
+    }
 
+    private void fetchJoke(){
+        new EndPoint().execute(new onJokeReceived() {
+            @Override
+            public void OnJokeReceivedListener(String joke) {
+                String mJoke = joke;
+                if(joke!=null) {
+                    Log.d("log", joke);
+                    startJokeActivity(mJoke);
+                }
+            }
+        });
+    }
 }
