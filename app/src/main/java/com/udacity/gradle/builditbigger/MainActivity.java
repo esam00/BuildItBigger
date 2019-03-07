@@ -13,6 +13,8 @@ import com.example.android.jokeandroidlibrary.DisplayJokeActivity;
 import networkAPI.EndPoint;
 import networkAPI.onJokeReceived;
 
+import static com.example.android.jokeandroidlibrary.DisplayJokeActivity.JOKE_EXTRA;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -50,7 +52,7 @@ return true;
 
     private void startJokeActivity(String joke){
         Intent mIntent = new Intent(MainActivity.this,DisplayJokeActivity.class);
-        mIntent.putExtra("joke",joke);
+        mIntent.putExtra(JOKE_EXTRA,joke);
         startActivity(mIntent);
     }
 
